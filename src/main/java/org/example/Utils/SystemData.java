@@ -2,44 +2,42 @@ package org.example.Utils;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.Entity.User;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 @Getter
 @Setter
-public class SystemData {
+public final class SystemData {
 
     String user;
     String date;
 
     private static SystemData currentSystemData;
 
-    public SystemData(String user, String date) {
+    private SystemData(String user, String date) {
         this.user = user;
         this.date = date;
     }
-
-    public SystemData() {
-    }
-
     public static String getCurrentSystemDate()
     {
         String date = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
         return date;
     }
 
-    public SystemData getCurrentSystemData()
+    public static void updateSystemData(User currentUser)
+    {
+        SystemData systemData = SystemData.getInstance();
+        systemData.setUser(currentUser.getName());
+        systemData.setDate(getCurrentSystemDate());
+    }
+    public static SystemData getInstance()
     {
         if(currentSystemData == null)
         {
-            return  new SystemData("","");
+            currentSystemData = new SystemData("","");
         }
         return currentSystemData;
-    }
-
-    public void setCurrentSystemData(SystemData newData)
-    {
-        currentSystemData = newData;
     }
 }

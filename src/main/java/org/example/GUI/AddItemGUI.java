@@ -14,12 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class AddItemGUI implements ActionListener, InterfaceGUI, PopupMenuListener {
+public class AddItemGUI implements ActionListener, CreatorGUI, PopupMenuListener {
 
     ScaleLayout scallingController = new ScaleLayout();
-    DatabaseConnection databaseConnection = new DatabaseConnection();
-    SystemData systemDataController = new SystemData();
-    AppSettings appSettingsController = new AppSettings();
 
     static JPanel addItemPanel = new JPanel();
     JLabel panelTitleLB = new JLabel("Insert Item:");
@@ -39,15 +36,15 @@ public class AddItemGUI implements ActionListener, InterfaceGUI, PopupMenuListen
     public static JPanel initGUI()
     {
         AddItemGUI addItemGUI = new AddItemGUI();
-        addItemGUI.setGUIParams();
-        addItemGUI.addGUIComponents();
-        addItemGUI.addGUIComponentsToListeners();
-        addItemGUI.setGUIComponentsParams();
+        addItemGUI.setGuiParams();
+        addItemGUI.addGuiComponents();
+        addItemGUI.addGuiComponentsToListeners();
+        addItemGUI.setGuiComponentsParams();
         return addItemPanel;
     }
 
     @Override
-    public void setGUIParams() {
+    public void setGuiParams() {
         Point screenSize = scallingController.getWindowSize(80, 100);
         addItemPanel.setSize(screenSize.x, screenSize.y);
         addItemPanel.setVisible(true);
@@ -56,7 +53,7 @@ public class AddItemGUI implements ActionListener, InterfaceGUI, PopupMenuListen
     }
 
     @Override
-    public void addGUIComponents() {
+    public void addGuiComponents() {
         addItemPanel.add(panelTitleLB);
         addItemPanel.add(insertItemBT);
         addItemPanel.add(eanLB);
@@ -72,28 +69,27 @@ public class AddItemGUI implements ActionListener, InterfaceGUI, PopupMenuListen
     }
 
     @Override
-    public void addGUIComponentsToListeners() {
+    public void addGuiComponentsToListeners() {
         insertItemBT.addActionListener(this);
         locationCB.addPopupMenuListener(this);
     }
 
     @Override
-    public void setGUIComponentsParams() {
-        ScaleLayout scallingAddItemView = new ScaleLayout(addItemPanel.getWidth(), addItemPanel.getHeight());
-        scallingAddItemView.setScallingParams(33, 10, 60, 5, 40, panelTitleLB, addItemPanel);
+    public void setGuiComponentsParams() {
+        scallingController.setScallingParams(33, 10, 60, 5, 40, panelTitleLB, addItemPanel);
 
-        scallingAddItemView.setScallingParams(15, 10, 30, 20, 20, eanLB, addItemPanel);
-        scallingAddItemView.setScallingParams(10, 5, 50, 22.5f, 35, eanTF, addItemPanel);
-        scallingAddItemView.setScallingParams(15, 10, 30, 27.5f, 20, nameLB, addItemPanel);
-        scallingAddItemView.setScallingParams(20, 5, 50, 30, 35, nameTF, addItemPanel);
-        scallingAddItemView.setScallingParams(15, 10, 30, 35, 20, locationLB, addItemPanel);
-        scallingAddItemView.setScallingParams(20, 5, 30, 37.5f, 35, locationCB, addItemPanel);
-        scallingAddItemView.setScallingParams(15, 10, 30, 42.5f, 20, qtyLB, addItemPanel);
-        scallingAddItemView.setScallingParams(10, 5, 50, 45, 35, qtySR, addItemPanel);
-        scallingAddItemView.setScallingParams(15, 10, 30, 50, 20, commentLB, addItemPanel);
-        scallingAddItemView.setScallingParams(40, 10, 20, 52.5f, 35, commentTF, addItemPanel);
+        scallingController.setScallingParams(15, 10, 30, 20, 20, eanLB, addItemPanel);
+        scallingController.setScallingParams(10, 5, 50, 22.5f, 35, eanTF, addItemPanel);
+        scallingController.setScallingParams(15, 10, 30, 27.5f, 20, nameLB, addItemPanel);
+        scallingController.setScallingParams(20, 5, 50, 30, 35, nameTF, addItemPanel);
+        scallingController.setScallingParams(15, 10, 30, 35, 20, locationLB, addItemPanel);
+        scallingController.setScallingParams(20, 5, 30, 37.5f, 35, locationCB, addItemPanel);
+        scallingController.setScallingParams(15, 10, 30, 42.5f, 20, qtyLB, addItemPanel);
+        scallingController.setScallingParams(10, 5, 50, 45, 35, qtySR, addItemPanel);
+        scallingController.setScallingParams(15, 10, 30, 50, 20, commentLB, addItemPanel);
+        scallingController.setScallingParams(40, 10, 20, 52.5f, 35, commentTF, addItemPanel);
 
-        scallingAddItemView.setScallingParams(33, 7, 30, 80, 33,insertItemBT, addItemPanel);
+        scallingController.setScallingParams(33, 7, 30, 80, 33,insertItemBT, addItemPanel);
         insertItemBT.setBackground(Color.decode("#d4d4d4"));
     }
 
@@ -105,7 +101,7 @@ public class AddItemGUI implements ActionListener, InterfaceGUI, PopupMenuListen
             try
             {
                 Item item = getParamsFromControls();
-                databaseConnection.insertItem(item);
+                DatabaseConnection.insertItem(item);
                 JOptionPane.showConfirmDialog(addItemPanel, "item inserted.", "Warning!", JOptionPane.DEFAULT_OPTION);
                 clearControls();
             }
@@ -139,8 +135,8 @@ public class AddItemGUI implements ActionListener, InterfaceGUI, PopupMenuListen
         String location = locationCB.getSelectedItem().toString();
         int qty = (int) qtySR.getValue();
         String comment = commentTF.getText();
-        String username = systemDataController.getCurrentSystemData().getUser();
-        String date = systemDataController.getCurrentSystemData().getDate();
+        String username = SystemData.getInstance().getUser();
+        String date = SystemData.getInstance().getDate();
         return new Item(0,ean,name,location,qty,comment,date,"PC_APP",username);
     }
 
@@ -165,7 +161,7 @@ public class AddItemGUI implements ActionListener, InterfaceGUI, PopupMenuListen
     private void reloadLocations()
     {
         locationCB.removeAllItems();
-        ArrayList<String> locations = appSettingsController.getCurrentAppSettings().getLocations();
+        ArrayList<String> locations = AppSettings.getInstance().getLocations();
         for (String location : locations) {
             locationCB.addItem(location);
         }

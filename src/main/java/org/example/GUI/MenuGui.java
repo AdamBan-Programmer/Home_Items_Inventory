@@ -10,12 +10,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MenuGui implements ActionListener,InterfaceGUI {
+public class MenuGui implements ActionListener, CreatorGUI {
 
     ScaleLayout scallingController = new ScaleLayout();
     Authentication authenticationController = new Authentication();
-    SystemData systemDataController = new SystemData();
-    ManagerGUI guiController = new ManagerGUI();
 
    static JLabel appNameLB = new JLabel("Home-Inventory");
    static JLabel systemDataLB = new JLabel();
@@ -30,15 +28,15 @@ public class MenuGui implements ActionListener,InterfaceGUI {
 
     public static JPanel initMenuGui() {
         MenuGui menuGui = new MenuGui();
-        menuGui.setGUIParams();
-        menuGui.addGUIComponents();
-        menuGui.addGUIComponentsToListeners();
-        menuGui.setGUIComponentsParams();
+        menuGui.setGuiParams();
+        menuGui.addGuiComponents();
+        menuGui.addGuiComponentsToListeners();
+        menuGui.setGuiComponentsParams();
         return menuPanel;
     }
 
     @Override
-    public void setGUIParams() {
+    public void setGuiParams() {
         Point currentPanelSize = scallingController.getWindowSize(80, 100);
         Point modePanelSize = scallingController.getWindowSize(20, 100);
         menuPanel.setSize(modePanelSize.x, modePanelSize.y);
@@ -49,7 +47,7 @@ public class MenuGui implements ActionListener,InterfaceGUI {
     }
 
     @Override
-    public void addGUIComponents() {
+    public void addGuiComponents() {
         menuPanel.add(appNameLB);
         menuPanel.add(systemDataLB);
         menuPanel.add(loginModeBT);
@@ -61,7 +59,7 @@ public class MenuGui implements ActionListener,InterfaceGUI {
     }
 
     @Override
-    public void addGUIComponentsToListeners() {
+    public void addGuiComponentsToListeners() {
         loginModeBT.addActionListener(this);
         readModeBT.addActionListener(this);
         addItemModeBT.addActionListener(this);
@@ -71,16 +69,15 @@ public class MenuGui implements ActionListener,InterfaceGUI {
     }
 
     @Override
-    public void setGUIComponentsParams() {
-        ScaleLayout scallingModePanel = new ScaleLayout(menuPanel.getWidth(), menuPanel.getHeight());
-        scallingModePanel.setScallingParams(90, 10, 40, 0, 5, appNameLB, menuPanel);
-        scallingModePanel.setScallingParams(90, 10, 20, 7, 5, systemDataLB, menuPanel);
-        scallingModePanel.setScallingParams(90, 7, 30, 20, 5, loginModeBT, menuPanel);
-        scallingModePanel.setScallingParams(90, 7, 30, 28, 5, readModeBT, menuPanel);
-        scallingModePanel.setScallingParams(90, 7, 30, 36, 5, addItemModeBT, menuPanel);
-        scallingModePanel.setScallingParams(90, 7, 30, 69, 5, infoModeBT, menuPanel);
-        scallingModePanel.setScallingParams(90, 7, 30, 77, 5, settingsModeBT, menuPanel);
-        scallingModePanel.setScallingParams(90, 7, 30, 85, 5, logoutModeBT, menuPanel);
+    public void setGuiComponentsParams() {
+        scallingController.setScallingParams(90, 10, 40, 0, 5, appNameLB, menuPanel);
+        scallingController.setScallingParams(90, 10, 20, 7, 5, systemDataLB, menuPanel);
+        scallingController.setScallingParams(90, 7, 30, 20, 5, loginModeBT, menuPanel);
+        scallingController.setScallingParams(90, 7, 30, 28, 5, readModeBT, menuPanel);
+        scallingController.setScallingParams(90, 7, 30, 36, 5, addItemModeBT, menuPanel);
+        scallingController.setScallingParams(90, 7, 30, 69, 5, infoModeBT, menuPanel);
+        scallingController.setScallingParams(90, 7, 30, 77, 5, settingsModeBT, menuPanel);
+        scallingController.setScallingParams(90, 7, 30, 85, 5, logoutModeBT, menuPanel);
         appNameLB.setForeground(Color.orange);
         appNameLB.setHorizontalAlignment(SwingConstants.CENTER);
         setButtonsDefaultColor();
@@ -116,7 +113,7 @@ public class MenuGui implements ActionListener,InterfaceGUI {
 
             if(component == settingsModeBT)
             {
-                newGui = CurrentGuiEnum.SETTGINS;
+                newGui = CurrentGuiEnum.SETTINGS;
             }
 
             if (component == logoutModeBT) {
@@ -124,15 +121,15 @@ public class MenuGui implements ActionListener,InterfaceGUI {
                 authenticationController.setAuthenticationStatus(AuthenticationStatusEnum.LOGGED_OUT);
                 setButtonsDefaultColor();
                 loginModeBT.setBackground(Color.GREEN);
-                JOptionPane.showConfirmDialog(guiController.getCurrentDisplayingPanel(), "Logged out successfully!", "Warning!", JOptionPane.DEFAULT_OPTION);
+                JOptionPane.showConfirmDialog(ManagerGUI.getCurrentDisplayingPanel(), "Logged out successfully!", "Warning!", JOptionPane.DEFAULT_OPTION);
             }
-            guiController.changeCurrentWindow(newGui);
+            ManagerGUI.changeCurrentWindow(newGui);
         }
     }
 
     //username,date
     private void updateSystemData() {
-        SystemData data = systemDataController.getCurrentSystemData();
+        SystemData data = SystemData.getInstance();
         systemDataLB.setText("<html>username: " + data.getUser() + "<br/><br/>date: " + data.getDate() + "</html>");
     }
 

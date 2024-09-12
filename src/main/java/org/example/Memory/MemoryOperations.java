@@ -6,8 +6,6 @@ import java.io.*;
 
 public class MemoryOperations {
 
-    AppSettings appSettingsController = new AppSettings();
-
     private static final String APP_NAME = "Home_Items_Inventory";
     private static final String APP_SAVE_LOCATION = "C:/";
     private static final String APP_SETTINGS_DIR = "Settings";
@@ -30,7 +28,20 @@ public class MemoryOperations {
         if (serializedSettings != null && serializedSettings.length > 0) {
             FileInputStream streamIn = new FileInputStream(serializedSettings[0]);
             ObjectInputStream objectInputStream = new ObjectInputStream(streamIn);
-            appSettingsController.setCurrentAppSettings((AppSettings) objectInputStream.readObject());
+            updateAppSettings((AppSettings) objectInputStream.readObject());
         }
+    }
+
+    public static void updateAppSettings(AppSettings newAppSettings)
+    {
+        AppSettings currentSettings = AppSettings.getInstance();
+
+        currentSettings.setDatabaseHost(newAppSettings.getDatabaseHost());
+        currentSettings.setDatabasePort(newAppSettings.getDatabasePort());
+        currentSettings.setDatabaseName(newAppSettings.getDatabaseName());
+        currentSettings.setLocations(newAppSettings.getLocations());
+        currentSettings.setDatabaseLogin(newAppSettings.getDatabaseLogin());
+        currentSettings.setDatabasePassword(newAppSettings.getDatabasePassword());
+        currentSettings.setLocations(newAppSettings.getLocations());
     }
 }

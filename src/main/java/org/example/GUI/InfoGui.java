@@ -5,9 +5,10 @@ import org.example.Utils.ScaleLayout;
 import javax.swing.*;
 import java.awt.*;
 
-public class InfoGui implements InterfaceGUI {
+public class InfoGui implements CreatorGUI {
 
     ScaleLayout scallingController = new ScaleLayout();
+
     static JPanel infoPanel = new JPanel();
     JLabel panelTitleLB = new JLabel("Information:");
     JLabel readItemInfoLB = new JLabel("to read items from database use: ------------------>");
@@ -19,15 +20,15 @@ public class InfoGui implements InterfaceGUI {
     public static JPanel initGUI()
     {
         InfoGui infoGui = new InfoGui();
-        infoGui.setGUIParams();
-        infoGui.addGUIComponents();
-        infoGui.addGUIComponentsToListeners();
-        infoGui.setGUIComponentsParams();
+        infoGui.setGuiParams();
+        infoGui.addGuiComponents();
+        infoGui.addGuiComponentsToListeners();
+        infoGui.setGuiComponentsParams();
         return infoPanel;
     }
 
     @Override
-    public void setGUIParams() {
+    public void setGuiParams() {
         Point screenSize = scallingController.getWindowSize(80, 100);
         infoPanel.setSize(screenSize.x, screenSize.y);
         infoPanel.setVisible(true);
@@ -36,7 +37,7 @@ public class InfoGui implements InterfaceGUI {
     }
 
     @Override
-    public void addGUIComponents() {
+    public void addGuiComponents() {
         infoPanel.add(panelTitleLB);
         infoPanel.add(readItemInfoLB);
         infoPanel.add(addItemInfoLB);
@@ -45,17 +46,16 @@ public class InfoGui implements InterfaceGUI {
     }
 
     @Override
-    public void addGUIComponentsToListeners() {
+    public void addGuiComponentsToListeners() {
         //
     }
 
     @Override
-    public void setGUIComponentsParams() {
-        ScaleLayout scallingInfoPanel = new ScaleLayout(infoPanel.getWidth(), infoPanel.getHeight());
-        scallingInfoPanel.setScallingParams(33, 10, 60, 5, 40, panelTitleLB, infoPanel);
-        scallingInfoPanel.setScallingParams(75, 7, 50, 28, 25, readItemInfoLB, infoPanel);
-        scallingInfoPanel.setScallingParams(75, 7, 50, 36, 25, addItemInfoLB, infoPanel);
-        scallingInfoPanel.setScallingParams(75, 7, 50, 77, 25, settingsInfoLB, infoPanel);
-        scallingInfoPanel.setScallingParams(75, 7, 50, 85, 25, logoutInfoLB, infoPanel);
+    public void setGuiComponentsParams() {
+        scallingController.setScallingParams(33, 10, 60, 5, 40, panelTitleLB, infoPanel);
+        scallingController.setScallingParams(75, 7, 50, 28, 25, readItemInfoLB, infoPanel);
+        scallingController.setScallingParams(75, 7, 50, 36, 25, addItemInfoLB, infoPanel);
+        scallingController.setScallingParams(75, 7, 50, 77, 25, settingsInfoLB, infoPanel);
+        scallingController.setScallingParams(75, 7, 50, 85, 25, logoutInfoLB, infoPanel);
     }
 }

@@ -15,11 +15,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReadItemGui implements ActionListener, InterfaceGUI, PopupMenuListener {
+public class ReadItemGui implements ActionListener, CreatorGUI, PopupMenuListener {
 
     ScaleLayout scallingController = new ScaleLayout();
-    DatabaseConnection databaseConnection = new DatabaseConnection();
-    AppSettings appSettingsController = new AppSettings();
 
     static JPanel readPanel = new JPanel();
     DefaultTableModel tableModel = new DefaultTableModel();
@@ -37,15 +35,15 @@ public class ReadItemGui implements ActionListener, InterfaceGUI, PopupMenuListe
     public static JPanel initGUI()
     {
         ReadItemGui readItemGui = new ReadItemGui();
-        readItemGui.setGUIParams();
-        readItemGui.addGUIComponents();
-        readItemGui.addGUIComponentsToListeners();
-        readItemGui. setGUIComponentsParams();
+        readItemGui.setGuiParams();
+        readItemGui.addGuiComponents();
+        readItemGui.addGuiComponentsToListeners();
+        readItemGui.setGuiComponentsParams();
         return readPanel;
     }
 
     @Override
-    public void setGUIParams() {
+    public void setGuiParams() {
         Point screenSize = scallingController.getWindowSize(80, 100);
         readPanel.setSize(screenSize.x, screenSize.y);
         readPanel.setVisible(true);
@@ -54,7 +52,7 @@ public class ReadItemGui implements ActionListener, InterfaceGUI, PopupMenuListe
     }
 
     @Override
-    public void addGUIComponents() {
+    public void addGuiComponents() {
         readPanel.add(scrollPane);
         readPanel.add(panelTitleLB);
         readPanel.add(locationLB);
@@ -67,24 +65,23 @@ public class ReadItemGui implements ActionListener, InterfaceGUI, PopupMenuListe
     }
 
     @Override
-    public void addGUIComponentsToListeners() {
+    public void addGuiComponentsToListeners() {
         locationCB.addPopupMenuListener(this);
         searchBT.addActionListener(this);
         removeBT.addActionListener(this);
     }
 
     @Override
-    public void setGUIComponentsParams() {
-        ScaleLayout scallingReadItemView = new ScaleLayout(readPanel.getWidth(), readPanel.getHeight());
-        scallingReadItemView.setScallingParams(33, 10, 60, 5, 40, panelTitleLB, readPanel);
-        scallingReadItemView.setScallingParams(13, 3, 50, 15.5f, 10, locationLB, readPanel);
-        scallingReadItemView.setScallingParams(13, 5, 30, 18, 10, locationCB, readPanel);
-        scallingReadItemView.setScallingParams(56, 3, 50, 15.5f, 24, itemNameLB, readPanel);
-        scallingReadItemView.setScallingParams(56, 5, 30, 18, 24, itemNameTF, readPanel);
-        scallingReadItemView.setScallingParams(15, 3, 60, 15, 75, resultsCountLB, readPanel);
-        scallingReadItemView.setScallingParams(9, 5, 30, 18, 81, searchBT, readPanel);
-        scallingReadItemView.setScallingParams(80, 60, 0, 25, 10, scrollPane, readPanel);
-        scallingReadItemView.setScallingParams(20, 5, 30, 87, 70, removeBT, readPanel);
+    public void setGuiComponentsParams() {
+        scallingController.setScallingParams(33, 10, 60, 5, 40, panelTitleLB, readPanel);
+        scallingController.setScallingParams(13, 3, 50, 15.5f, 10, locationLB, readPanel);
+        scallingController.setScallingParams(13, 5, 30, 18, 10, locationCB, readPanel);
+        scallingController.setScallingParams(56, 3, 50, 15.5f, 24, itemNameLB, readPanel);
+        scallingController.setScallingParams(56, 5, 30, 18, 24, itemNameTF, readPanel);
+        scallingController.setScallingParams(15, 3, 60, 15, 75, resultsCountLB, readPanel);
+        scallingController.setScallingParams(9, 5, 30, 18, 81, searchBT, readPanel);
+        scallingController.setScallingParams(80, 60, 0, 25, 10, scrollPane, readPanel);
+        scallingController.setScallingParams(20, 5, 30, 87, 70, removeBT, readPanel);
         searchBT.setBackground(Color.decode("#d1d1d1"));
         removeBT.setBackground(Color.decode("#f74053"));
         locationCB.addItem("ALL");
@@ -107,7 +104,7 @@ public class ReadItemGui implements ActionListener, InterfaceGUI, PopupMenuListe
         if (component == searchBT) {
             String location = locationCB.getSelectedItem().toString();
             String name = itemNameTF.getText();
-            List<Item> items = databaseConnection.getItemsList(location, name);
+            List<Item> items = DatabaseConnection.getItemsList(location, name);
             updateTableContent(items);
             resultsCountLB.setText("Results: " + items.size() + " records.");
         }
@@ -139,7 +136,7 @@ public class ReadItemGui implements ActionListener, InterfaceGUI, PopupMenuListe
         for(int i =0;i<itemsToRemove.length;i++)
         {
             tableModel.removeRow(selectedRows[i]-i);
-            databaseConnection.removeItem(itemsToRemove[i]);
+            DatabaseConnection.removeItem(itemsToRemove[i]);
         }
     }
 
@@ -197,7 +194,7 @@ public class ReadItemGui implements ActionListener, InterfaceGUI, PopupMenuListe
     {
         locationCB.removeAllItems();
         locationCB.addItem("ALL");
-        ArrayList<String> locations = appSettingsController.getCurrentAppSettings().getLocations();
+        ArrayList<String> locations = AppSettings.getInstance().getLocations();
         for (String location : locations) {
             locationCB.addItem(location);
         }

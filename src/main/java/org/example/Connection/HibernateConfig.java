@@ -6,12 +6,10 @@ import java.util.Properties;
 
 public class HibernateConfig {
 
-    AppSettings appSettingsController = new AppSettings();
-
     //config
     public Properties setProperties()
     {
-        AppSettings settings = appSettingsController.getCurrentAppSettings();
+        AppSettings settings = AppSettings.getInstance();
 
         Properties properties= new Properties();
         properties.setProperty("hibernate.connection.url", "jdbc:mysql://"+settings.getDatabaseHost()+":"+settings.getDatabasePort()+"/"+settings.getDatabaseName());

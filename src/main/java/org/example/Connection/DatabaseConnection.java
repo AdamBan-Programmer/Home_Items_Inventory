@@ -15,21 +15,18 @@ import java.util.Properties;
 
 @Getter
 @Setter
-public class DatabaseConnection {
+public final class DatabaseConnection {
 
     static HibernateConfig hibernateCfgController = new HibernateConfig();
 
     Properties properties;
     Session session;
 
-    static DatabaseConnection connection = null;
+    private static DatabaseConnection connection;
 
-    public DatabaseConnection(Properties properties, Session session) {
+    private DatabaseConnection(Properties properties, Session session) {
         this.properties = properties;
         this.session = session;
-    }
-
-    public DatabaseConnection() {
     }
 
     //estabilish connection with database
@@ -44,25 +41,28 @@ public class DatabaseConnection {
     }
 
     //returns user
-    public List<User> getAccountList(Authentication authentication) {
-        Session session = getConnection().getSession();
+    public static List<User> getAccountList(Authentication authentication) {
+        Session session = getInstance().getSession();
         String request = "FROM User WHERE login = '" + authentication.getUsername() + "' AND password = '" + authentication.getPassword() + "'";
-        return session.createQuery(request, User.class).list();
+        List<User> userList = session.createQuery(request, User.class).list();
+        session.clear();
+        return userList;
     }
 
     // adds item into database
-    public void insertItem(Item item)
+    public static void insertItem(Item item)
     {
-        Session session = getConnection().getSession();
+        Session session = getInstance().getSession();
         Transaction transaction = session.beginTransaction();
         session.save(item);
         transaction.commit();
+        session.clear();
     }
 
     // returns list of items by query
-    public List<Item> getItemsList(String location,String name)
+    public static List<Item> getItemsList(String location,String name)
     {
-        Session session = getConnection().getSession();
+        Session session = getInstance().getSession();
         String request = "FROM Item ";
         if(!location.equals("ALL"))
         {
@@ -78,27 +78,26 @@ public class DatabaseConnection {
                 request+=" WHERE Name Like'%" + name+"%'";
             }
         }
-        return session.createQuery(request, Item.class).list();
+        List<Item> itemList = session.createQuery(request, Item.class).list();
+        session.clear();
+        return itemList;
     }
 
     //removes item from database
-    public void removeItem(Item item)
+    public static void removeItem(Item item)
     {
-        Session session = getConnection().getSession();
+        Session session = getInstance().getSession();
         Transaction transaction = session.beginTransaction();
         session.remove(item);
         transaction.commit();
+        session.clear();
     }
 
-    public static DatabaseConnection getConnection() {
+    public static DatabaseConnection getInstance() {
         if(connection == null)
         {
-            return new DatabaseConnection(hibernateCfgController.setProperties(),startDatabaseConnection());
+            connection = new DatabaseConnection(hibernateCfgController.setProperties(),startDatabaseConnection());
         }
         return connection;
-    }
-
-    public static void setConnection(DatabaseConnection connection) {
-        DatabaseConnection.connection = connection;
     }
 }

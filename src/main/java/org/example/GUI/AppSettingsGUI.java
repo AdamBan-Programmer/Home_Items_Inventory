@@ -11,10 +11,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class AppSettingsGUI implements ActionListener, InterfaceGUI {
+public class AppSettingsGUI implements ActionListener, CreatorGUI {
 
     ScaleLayout scallingController = new ScaleLayout();
-    AppSettings appSettingsController = new AppSettings();
     MemoryOperations memoryController = new MemoryOperations();
 
     static JPanel appSettingsPanel = new JPanel();
@@ -38,16 +37,16 @@ public class AppSettingsGUI implements ActionListener, InterfaceGUI {
 
     public static JPanel initGUI() {
         AppSettingsGUI settingsGui = new AppSettingsGUI();
-        settingsGui.setGUIParams();
-        settingsGui.addGUIComponents();
-        settingsGui.addGUIComponentsToListeners();
-        settingsGui.setGUIComponentsParams();
+        settingsGui.setGuiParams();
+        settingsGui.addGuiComponents();
+        settingsGui.addGuiComponentsToListeners();
+        settingsGui.setGuiComponentsParams();
         settingsGui.setSettingsIntoControls();
         return appSettingsPanel;
     }
 
     @Override
-    public void setGUIParams() {
+    public void setGuiParams() {
         Point settingsPanelSize = scallingController.getWindowSize(80, 100);
         appSettingsPanel.setSize(settingsPanelSize.x, settingsPanelSize.y);
         appSettingsPanel.setVisible(true);
@@ -56,7 +55,7 @@ public class AppSettingsGUI implements ActionListener, InterfaceGUI {
     }
 
     @Override
-    public void addGUIComponents() {
+    public void addGuiComponents() {
         appSettingsPanel.add(panelTitleLB);
         appSettingsPanel.add(databasePortLB);
         appSettingsPanel.add(databasePortTF);
@@ -76,33 +75,32 @@ public class AppSettingsGUI implements ActionListener, InterfaceGUI {
     }
 
     @Override
-    public void addGUIComponentsToListeners() {
+    public void addGuiComponentsToListeners() {
         saveBT.addActionListener(this);
         addLocationBT.addActionListener(this);
         removeLocationBT.addActionListener(this);
     }
 
     @Override
-    public void setGUIComponentsParams() {
-        ScaleLayout scallingInViewElements = new ScaleLayout(appSettingsPanel.getWidth(), appSettingsPanel.getHeight());
-        scallingInViewElements.setScallingParams(33, 10, 60, 5, 40, panelTitleLB, appSettingsPanel);
-        scallingInViewElements.setScallingParams(20, 20, 15, 15, 15, databasePortLB, appSettingsPanel);
-        scallingInViewElements.setScallingParams(30, 5, 50, 22.5f, 40, databasePortTF, appSettingsPanel);
-        scallingInViewElements.setScallingParams(20, 20, 15, 25, 15,databaseHostLB, appSettingsPanel);
-        scallingInViewElements.setScallingParams(30, 5, 50, 32.5f, 40,databaseHostTF, appSettingsPanel);
-        scallingInViewElements.setScallingParams(20, 20, 15, 35, 15,databaseNameLB, appSettingsPanel);
-        scallingInViewElements.setScallingParams(30, 5, 50, 42.5f, 40,databaseNameTF, appSettingsPanel);
-        scallingInViewElements.setScallingParams(20, 20, 15, 45, 15,databaseLoginLB, appSettingsPanel);
-        scallingInViewElements.setScallingParams(30, 5, 50, 52.5f, 40,databaseLoginTF, appSettingsPanel);
-        scallingInViewElements.setScallingParams(20, 20, 15, 55, 15,databasePasswordLB, appSettingsPanel);
-        scallingInViewElements.setScallingParams(30, 5, 50, 62.5f, 40,databasePasswordTF, appSettingsPanel);
+    public void setGuiComponentsParams() {
+        scallingController.setScallingParams(33, 10, 60, 5, 40, panelTitleLB, appSettingsPanel);
+        scallingController.setScallingParams(20, 20, 15, 15, 15, databasePortLB, appSettingsPanel);
+        scallingController.setScallingParams(30, 5, 50, 22.5f, 40, databasePortTF, appSettingsPanel);
+        scallingController.setScallingParams(20, 20, 15, 25, 15,databaseHostLB, appSettingsPanel);
+        scallingController.setScallingParams(30, 5, 50, 32.5f, 40,databaseHostTF, appSettingsPanel);
+        scallingController.setScallingParams(20, 20, 15, 35, 15,databaseNameLB, appSettingsPanel);
+        scallingController.setScallingParams(30, 5, 50, 42.5f, 40,databaseNameTF, appSettingsPanel);
+        scallingController.setScallingParams(20, 20, 15, 45, 15,databaseLoginLB, appSettingsPanel);
+        scallingController.setScallingParams(30, 5, 50, 52.5f, 40,databaseLoginTF, appSettingsPanel);
+        scallingController.setScallingParams(20, 20, 15, 55, 15,databasePasswordLB, appSettingsPanel);
+        scallingController.setScallingParams(30, 5, 50, 62.5f, 40,databasePasswordTF, appSettingsPanel);
 
-        scallingInViewElements.setScallingParams(20, 5, 40, 18, 75, locationsLB, appSettingsPanel);
-        scallingInViewElements.setScallingParams(20, 5, 30, 22, 75, locationsCB, appSettingsPanel);
-        scallingInViewElements.setScallingParams(9.5f, 5, 15, 28, 75, addLocationBT, appSettingsPanel);
-        scallingInViewElements.setScallingParams(9.5f, 5, 15, 28, 85.5f, removeLocationBT, appSettingsPanel);
+        scallingController.setScallingParams(20, 5, 40, 18, 75, locationsLB, appSettingsPanel);
+        scallingController.setScallingParams(20, 5, 30, 22, 75, locationsCB, appSettingsPanel);
+        scallingController.setScallingParams(9.5f, 5, 15, 28, 75, addLocationBT, appSettingsPanel);
+        scallingController.setScallingParams(9.5f, 5, 15, 28, 85.5f, removeLocationBT, appSettingsPanel);
 
-        scallingInViewElements.setScallingParams(33, 7, 20, 80, 33,saveBT, appSettingsPanel);
+        scallingController.setScallingParams(33, 7, 20, 80, 33,saveBT, appSettingsPanel);
         saveBT.setBackground(Color.decode("#d4d4d4"));
         addLocationBT.setBackground(Color.decode("#d4d4d4"));
         removeLocationBT.setBackground(Color.decode("#d4d4d4"));
@@ -129,7 +127,7 @@ public class AppSettingsGUI implements ActionListener, InterfaceGUI {
         if (component == saveBT) {
             try {
                 updateCurrentSettings();
-                memoryController.serializeSettings(appSettingsController.getCurrentAppSettings());
+                memoryController.serializeSettings(AppSettings.getInstance());
                 JOptionPane.showConfirmDialog(appSettingsPanel, "Settings has been saved.","Warning!", JOptionPane.DEFAULT_OPTION);
             } catch (IOException ex) {
                 JOptionPane.showConfirmDialog(appSettingsPanel, "Couldn't save Settings!","Warning!", JOptionPane.DEFAULT_OPTION);
@@ -139,7 +137,7 @@ public class AppSettingsGUI implements ActionListener, InterfaceGUI {
 
     private void setSettingsIntoControls()
     {
-        AppSettings settings = appSettingsController.getCurrentAppSettings();
+        AppSettings settings = AppSettings.getInstance();
         databasePortTF.setText(settings.getDatabasePort());
         databaseHostTF.setText(settings.getDatabaseHost());
         databaseNameTF.setText(settings.getDatabaseName());
@@ -150,13 +148,13 @@ public class AppSettingsGUI implements ActionListener, InterfaceGUI {
 
     private void updateCurrentSettings()
     {
-        String port = databasePortTF.getText();
-        String host = databaseHostTF.getText();
-        String databaseName = databaseNameTF.getText();
-        String login = databaseLoginTF.getText();
-        String password = databasePasswordTF.getText();
-        ArrayList<String> locations = getLocations();
-        appSettingsController.setCurrentAppSettings(new AppSettings(host,port,databaseName,login,password,locations));
+        AppSettings settings = AppSettings.getInstance();
+        settings.setDatabasePort(databasePortTF.getText());
+        settings.setDatabaseHost(databaseHostTF.getText());
+        settings.setDatabaseName(databaseNameTF.getText());
+        settings.setDatabaseLogin(databaseLoginTF.getText());
+        settings.setDatabasePassword(databasePasswordTF.getText());
+        settings.setLocations(getLocations());
     }
 
     private ArrayList<String> getLocations()
@@ -173,7 +171,7 @@ public class AppSettingsGUI implements ActionListener, InterfaceGUI {
 
     private void loadLocations()
     {
-       ArrayList<String> locations = appSettingsController.getCurrentAppSettings().getLocations();
+       ArrayList<String> locations = AppSettings.getInstance().getLocations();
        if(locations != null) {
            for (String location : locations) {
                locationsCB.addItem(location);

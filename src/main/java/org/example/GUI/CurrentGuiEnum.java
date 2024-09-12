@@ -2,7 +2,7 @@ package org.example.GUI;
 
 public enum CurrentGuiEnum {
     ADD_ITEM,
-    SETTGINS,
+    SETTINGS,
     INFO,
     LOGIN,
     READ_ITEM

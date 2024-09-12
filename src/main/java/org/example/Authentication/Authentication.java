@@ -12,9 +12,6 @@ import java.util.List;
 @Setter
 public class Authentication {
 
-    DatabaseConnection databaseConnection = new DatabaseConnection();
-    SystemData systemDataController = new SystemData();
-
     String username;
     String password;
 
@@ -32,7 +29,7 @@ public class Authentication {
 
     //returns user after validation
     public User userValidated(Authentication authentication) {
-        List<User> users = databaseConnection.getAccountList(authentication);
+        List<User> users = DatabaseConnection.getAccountList(authentication);
         try {
             return users.get(0);
         } catch (IndexOutOfBoundsException e) {

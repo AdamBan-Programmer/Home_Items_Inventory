@@ -5,25 +5,29 @@ import org.example.Memory.FileScanner;
 import org.example.Memory.MemoryOperations;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 
 public class Main {
 
     static FileScanner fileScanner = new FileScanner();
     static MemoryOperations memoryController = new MemoryOperations();
-    static ManagerGUI guiController = new ManagerGUI();
 
     public static void main(String[] args) {
         try {
-            guiController.createFrame();
             fileScanner.checkAllDirectoriesExist();
             memoryController.readSerializedSettings();
         } catch (IOException | ClassNotFoundException e) {
-            JOptionPane.showConfirmDialog(guiController.getMainWindowFrame(), "Couldn't load Settings!", "Warning!", JOptionPane.DEFAULT_OPTION);
+            e.printStackTrace();
         }
         finally {
-            guiController.loadPanelsMap();
-            guiController.changeCurrentWindow(CurrentGuiEnum.LOGIN);
+            EventQueue.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    new ManagerGUI();
+                }
+            });
         }
     }
 }

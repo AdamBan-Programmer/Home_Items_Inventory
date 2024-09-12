@@ -13,13 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.NoSuchAlgorithmException;
 
-public class LoginGui implements ActionListener, InterfaceGUI {
+public class LoginGui implements ActionListener, CreatorGUI {
 
     ScaleLayout scallingController = new ScaleLayout();
     Authentication authenticationController = new Authentication();
-    InfoGui infoGuiController = new InfoGui();
-    SystemData systemDataController = new SystemData();
-    ManagerGUI guiController = new ManagerGUI();
     MD5Encryption encryptionController = new MD5Encryption();
 
     static JPanel authenticationPanel = new JPanel();
@@ -33,15 +30,15 @@ public class LoginGui implements ActionListener, InterfaceGUI {
     public static JPanel initGUI()
     {
         LoginGui loginGui = new LoginGui();
-        loginGui.setGUIParams();
-        loginGui.addGUIComponents();
-        loginGui.addGUIComponentsToListeners();
-        loginGui.setGUIComponentsParams();
+        loginGui.setGuiParams();
+        loginGui.addGuiComponents();
+        loginGui.addGuiComponentsToListeners();
+        loginGui.setGuiComponentsParams();
         return authenticationPanel;
     }
 
     @Override
-    public void setGUIParams() {
+    public void setGuiParams() {
         Point screenSize = scallingController.getWindowSize(80, 100);
         authenticationPanel.setSize(screenSize.x, screenSize.y);
         authenticationPanel.setVisible(true);
@@ -50,7 +47,7 @@ public class LoginGui implements ActionListener, InterfaceGUI {
     }
 
     @Override
-    public void addGUIComponents() {
+    public void addGuiComponents() {
         authenticationPanel.add(panelTitleLB);
         authenticationPanel.add(usernameLB);
         authenticationPanel.add(usernameTF);
@@ -60,19 +57,18 @@ public class LoginGui implements ActionListener, InterfaceGUI {
     }
 
     @Override
-    public void addGUIComponentsToListeners() {
+    public void addGuiComponentsToListeners() {
         loginBT.addActionListener(this);
     }
 
     @Override
-    public void setGUIComponentsParams() {
-        ScaleLayout scallingInViewElements = new ScaleLayout(authenticationPanel.getWidth(), authenticationPanel.getHeight());
-        scallingInViewElements.setScallingParams(63, 10, 60, 5, 37, panelTitleLB, authenticationPanel);
-        scallingInViewElements.setScallingParams(30, 5, 40, 30, 30, usernameLB, authenticationPanel);
-        scallingInViewElements.setScallingParams(30, 5, 40, 35, 30, usernameTF, authenticationPanel);
-        scallingInViewElements.setScallingParams(30, 5, 40, 45, 30, passwordLB, authenticationPanel);
-        scallingInViewElements.setScallingParams(30, 5, 40, 50, 30, passwordTF, authenticationPanel);
-        scallingInViewElements.setScallingParams(15, 5, 40, 65, 30, loginBT, authenticationPanel);
+    public void setGuiComponentsParams() {
+        scallingController.setScallingParams(63, 10, 60, 5, 37, panelTitleLB, authenticationPanel);
+        scallingController.setScallingParams(30, 5, 40, 30, 30, usernameLB, authenticationPanel);
+        scallingController.setScallingParams(30, 5, 40, 35, 30, usernameTF, authenticationPanel);
+        scallingController.setScallingParams(30, 5, 40, 45, 30, passwordLB, authenticationPanel);
+        scallingController.setScallingParams(30, 5, 40, 50, 30, passwordTF, authenticationPanel);
+        scallingController.setScallingParams(15, 5, 40, 65, 30, loginBT, authenticationPanel);
         loginBT.setBackground(Color.decode("#d4d4d4"));
     }
 
@@ -84,11 +80,9 @@ public class LoginGui implements ActionListener, InterfaceGUI {
                 Authentication auth = getDataFromControls();
                 User currentUser = authenticationController.userValidated(auth);
                 if (currentUser != null) {
-                    InfoGui.initGUI();
-                    String loginDate = systemDataController.getCurrentSystemDate();
-                    systemDataController.setCurrentSystemData(new SystemData(currentUser.getName(), loginDate));
+                    SystemData.updateSystemData(currentUser);
                     authenticationController.setAuthenticationStatus(AuthenticationStatusEnum.LOGGED_IN);
-                    guiController.changeCurrentWindow(CurrentGuiEnum.INFO);
+                    ManagerGUI.changeCurrentWindow(CurrentGuiEnum.INFO);
                 }
                 else {
                     JOptionPane.showConfirmDialog(authenticationPanel, "Entered username or password Incorrect!", "Warning!", JOptionPane.DEFAULT_OPTION);
@@ -101,7 +95,6 @@ public class LoginGui implements ActionListener, InterfaceGUI {
             JOptionPane.showConfirmDialog(authenticationPanel, "Error when logging!", "Warning!", JOptionPane.DEFAULT_OPTION);
         }
     }
-
     private Authentication getDataFromControls() throws NoSuchAlgorithmException {
         String username = usernameTF.getText();
         String password =  passwordTF.getText();
