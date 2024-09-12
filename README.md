@@ -10,11 +10,11 @@ click 'Home_Items_Inventory.jar' in master branch and download file.
 
 # How to use: 
 1. create database.
-2) create table:
-3) 'items' with columns: id,Ean,Name,Location,Qty,Items_comment,Info_date,AppId,UserId
-4) 'users' with columns: id,login,password,name
-4) download and configure application in 'SETTINGS' panel.
-5) create batch file: java -jar path_to_jar_file/Home_Items_Inventory.jar
+2. create table:
+3. 'items' with columns: id,Ean,Name,Location,Qty,Items_comment,Info_date,AppId,UserId
+4. 'users' with columns: id,login,password,name
+5. download and configure application in 'SETTINGS' panel.
+6. create batch file: java -jar path_to_jar_file/Home_Items_Inventory.jar
 
 # Example:
 Login:
