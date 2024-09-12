@@ -6,7 +6,7 @@ It is a simple application to store your items. Using this application you can s
 I created this app to see where i have items in my home. It's really usefull when you need some item and you don't know where it is or when you don't know if you have ever had this item. I used Hibernate framework to connect and manage database. I made an authentication with hashed password (MD5). It secures application before other people. Settings file is serialized that's why can quick and easy configure this app. All application is scallable. GUI look the same in every resolutions.
 
 # How to download:
-click 'out/artifacts/Home_Items_Inventory_jar' in master branch and download 'Home_Items_Inventory.jar'. 
+click 'Home_Items_Inventory.jar' in master branch and download file. 
 
 # How to use: 
 1. create database.
@@ -14,7 +14,7 @@ click 'out/artifacts/Home_Items_Inventory_jar' in master branch and download 'Ho
 3) 'items' with columns: id,Ean,Name,Location,Qty,Items_comment,Info_date,AppId,UserId
 4) 'users' with columns: id,login,password,name
 4) download and configure application in 'SETTINGS' panel.
-5) create bash file: java -jar path_to_jar_file/Home_Items_Inventory.jar
+5) create batch file: java -jar path_to_jar_file/Home_Items_Inventory.jar
 
 # Example:
 Login:
