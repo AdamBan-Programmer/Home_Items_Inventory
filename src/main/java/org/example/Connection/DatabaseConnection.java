@@ -19,10 +19,9 @@ public final class DatabaseConnection {
 
     static HibernateConfig hibernateCfgController = new HibernateConfig();
 
-    Properties properties;
-    Session session;
-
-    private static DatabaseConnection connection;
+    private static DatabaseConnection instance;
+    private Properties properties;
+    private Session session;
 
     private DatabaseConnection(Properties properties, Session session) {
         this.properties = properties;
@@ -94,10 +93,10 @@ public final class DatabaseConnection {
     }
 
     public static DatabaseConnection getInstance() {
-        if(connection == null)
+        if(instance == null)
         {
-            connection = new DatabaseConnection(hibernateCfgController.setProperties(),startDatabaseConnection());
+            instance = new DatabaseConnection(hibernateCfgController.setProperties(),startDatabaseConnection());
         }
-        return connection;
+        return instance;
     }
 }

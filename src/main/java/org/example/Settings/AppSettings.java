@@ -10,14 +10,13 @@ import java.util.ArrayList;
 @Setter
 public final class AppSettings implements Serializable {
 
-    String databaseHost;
-    String databasePort;
-    String databaseName;
-    String databaseLogin;
-    String databasePassword;
-    ArrayList<String> locations;
-
-    private static AppSettings currentAppSettings;
+    private static AppSettings instance;
+    private String databaseHost;
+    private String databasePort;
+    private String databaseName;
+    private String databaseLogin;
+    private String databasePassword;
+    private ArrayList<String> locations;
 
     private AppSettings(String databaseHost, String databasePort, String databaseName, String databaseLogin, String databasePassword, ArrayList<String> locations) {
         this.databaseHost = databaseHost;
@@ -29,10 +28,10 @@ public final class AppSettings implements Serializable {
     }
     public static AppSettings getInstance()
     {
-        if(currentAppSettings == null)
+        if(instance == null)
         {
-            currentAppSettings = new AppSettings("","","","","",new ArrayList<String>());
+            instance = new AppSettings("","","","","",new ArrayList<String>());
         }
-        return currentAppSettings;
+        return instance;
     }
 }

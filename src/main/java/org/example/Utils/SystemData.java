@@ -11,10 +11,9 @@ import java.util.Calendar;
 @Setter
 public final class SystemData {
 
-    String user;
-    String date;
-
-    private static SystemData currentSystemData;
+    private static SystemData instance;
+    private String user;
+    private String date;
 
     private SystemData(String user, String date) {
         this.user = user;
@@ -34,10 +33,10 @@ public final class SystemData {
     }
     public static SystemData getInstance()
     {
-        if(currentSystemData == null)
+        if(instance == null)
         {
-            currentSystemData = new SystemData("","");
+            instance = new SystemData("","");
         }
-        return currentSystemData;
+        return instance;
     }
 }
