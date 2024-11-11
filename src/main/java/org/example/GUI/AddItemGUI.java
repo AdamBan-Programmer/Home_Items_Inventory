@@ -1,7 +1,7 @@
 package org.example.GUI;
 
-import org.example.Connection.DatabaseConnection;
 import org.example.Entity.Item;
+import org.example.Service.DatabaseConnectionService;
 import org.example.Settings.AppSettings;
 import org.example.Utils.ScaleLayout;
 import org.example.Utils.SystemData;
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class AddItemGUI implements ActionListener, CreatorGUI, PopupMenuListener {
 
     ScaleLayout scallingController = new ScaleLayout();
+    DatabaseConnectionService databaseService = new DatabaseConnectionService();
 
     static JPanel addItemPanel = new JPanel();
     JLabel panelTitleLB = new JLabel("Insert Item:");
@@ -101,7 +102,7 @@ public class AddItemGUI implements ActionListener, CreatorGUI, PopupMenuListener
             try
             {
                 Item item = getParamsFromControls();
-                DatabaseConnection.insertItem(item);
+                databaseService.insertItem(item);
                 JOptionPane.showConfirmDialog(addItemPanel, "item inserted.", "Warning!", JOptionPane.DEFAULT_OPTION);
                 clearControls();
             }
@@ -135,7 +136,7 @@ public class AddItemGUI implements ActionListener, CreatorGUI, PopupMenuListener
         String location = locationCB.getSelectedItem().toString();
         int qty = (int) qtySR.getValue();
         String comment = commentTF.getText();
-        String username = SystemData.getInstance().getUser();
+        String username = SystemData.getInstance().getUsername();
         String date = SystemData.getInstance().getDate();
         return new Item(0,ean,name,location,qty,comment,date,"PC_APP",username);
     }

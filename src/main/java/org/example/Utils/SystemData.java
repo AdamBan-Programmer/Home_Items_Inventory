@@ -2,6 +2,7 @@ package org.example.Utils;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.Authentication.AuthenticationStatusEnum;
 import org.example.Entity.User;
 
 import java.text.SimpleDateFormat;
@@ -12,30 +13,24 @@ import java.util.Calendar;
 public final class SystemData {
 
     private static SystemData instance;
-    private String user;
+    private String username;
     private String date;
+    private Enum status;
 
-    private SystemData(String user, String date) {
-        this.user = user;
+    public SystemData(String username, String date, Enum status) {
+        this.username = username;
         this.date = date;
+        this.status = status;
     }
-    public static String getCurrentSystemDate()
+    public static void reset()
     {
-        String date = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
-        return date;
-    }
-
-    public static void updateSystemData(User currentUser)
-    {
-        SystemData systemData = SystemData.getInstance();
-        systemData.setUser(currentUser.getName());
-        systemData.setDate(getCurrentSystemDate());
+        instance = null;
     }
     public static SystemData getInstance()
     {
         if(instance == null)
         {
-            instance = new SystemData("","");
+            instance = new SystemData("","", AuthenticationStatusEnum.LOGGED_OUT);
         }
         return instance;
     }

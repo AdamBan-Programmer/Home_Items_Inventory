@@ -12,12 +12,8 @@ import java.util.List;
 @Setter
 public class Authentication {
 
-    String username;
-    String password;
-
-    @Getter
-    @Setter
-    public static AuthenticationStatusEnum authenticationStatus = AuthenticationStatusEnum.LOGGED_OUT;
+    private String username;
+    private String password;
 
     public Authentication(String username, String password) {
         this.username = username;
@@ -27,13 +23,4 @@ public class Authentication {
     public Authentication() {
     }
 
-    //returns user after validation
-    public User userValidated(Authentication authentication) {
-        List<User> users = DatabaseConnection.getAccountList(authentication);
-        try {
-            return users.get(0);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
-    }
 }

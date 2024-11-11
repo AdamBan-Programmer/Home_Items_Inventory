@@ -1,7 +1,7 @@
 package org.example.GUI;
 
-import org.example.Authentication.Authentication;
 import org.example.Authentication.AuthenticationStatusEnum;
+import org.example.Service.UserService;
 import org.example.Utils.ScaleLayout;
 import org.example.Utils.SystemData;
 
@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 public class MenuGui implements ActionListener, CreatorGUI {
 
     ScaleLayout scallingController = new ScaleLayout();
-    Authentication authenticationController = new Authentication();
 
    static JLabel appNameLB = new JLabel("Home-Inventory");
    static JLabel systemDataLB = new JLabel();
@@ -118,7 +117,7 @@ public class MenuGui implements ActionListener, CreatorGUI {
 
             if (component == logoutModeBT) {
                 newGui = CurrentGuiEnum.LOGIN;
-                authenticationController.setAuthenticationStatus(AuthenticationStatusEnum.LOGGED_OUT);
+                SystemData.getInstance().setStatus(AuthenticationStatusEnum.LOGGED_OUT);
                 setButtonsDefaultColor();
                 loginModeBT.setBackground(Color.GREEN);
                 JOptionPane.showConfirmDialog(ManagerGUI.getCurrentDisplayingPanel(), "Logged out successfully!", "Warning!", JOptionPane.DEFAULT_OPTION);
@@ -129,8 +128,12 @@ public class MenuGui implements ActionListener, CreatorGUI {
 
     //username,date
     private void updateSystemData() {
+
+        if(SystemData.getInstance().getStatus() == AuthenticationStatusEnum.LOGGED_OUT) {
+            SystemData.reset();
+        }
         SystemData data = SystemData.getInstance();
-        systemDataLB.setText("<html>username: " + data.getUser() + "<br/><br/>date: " + data.getDate() + "</html>");
+        systemDataLB.setText("<html>username: " + data.getUsername() + "<br/><br/>date: " + data.getDate() + "</html>");
     }
 
     //sets gray background-color
@@ -145,7 +148,7 @@ public class MenuGui implements ActionListener, CreatorGUI {
 
     //enable right buttons
     private void changeModeButtonsEnable() {
-        boolean status = !(authenticationController.getAuthenticationStatus() == AuthenticationStatusEnum.LOGGED_OUT);
+        boolean status = !(SystemData.getInstance().getStatus() == AuthenticationStatusEnum.LOGGED_OUT);
         for (Component component : menuPanel.getComponents()) {
             if (component instanceof JButton) {
                 if (component != settingsModeBT) {

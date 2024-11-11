@@ -1,7 +1,7 @@
 package org.example.GUI;
 
-import org.example.Connection.DatabaseConnection;
 import org.example.Entity.Item;
+import org.example.Service.DatabaseConnectionService;
 import org.example.Settings.AppSettings;
 import org.example.Utils.ScaleLayout;
 
@@ -18,6 +18,7 @@ import java.util.List;
 public class ReadItemGui implements ActionListener, CreatorGUI, PopupMenuListener {
 
     ScaleLayout scallingController = new ScaleLayout();
+    DatabaseConnectionService databaseService = new DatabaseConnectionService();
 
     static JPanel readPanel = new JPanel();
     DefaultTableModel tableModel = new DefaultTableModel();
@@ -104,7 +105,7 @@ public class ReadItemGui implements ActionListener, CreatorGUI, PopupMenuListene
         if (component == searchBT) {
             String location = locationCB.getSelectedItem().toString();
             String name = itemNameTF.getText();
-            List<Item> items = DatabaseConnection.getItemsList(location, name);
+            List<Item> items = databaseService.getItemsList(location, name);
             updateTableContent(items);
             resultsCountLB.setText("Results: " + items.size() + " records.");
         }
@@ -136,7 +137,7 @@ public class ReadItemGui implements ActionListener, CreatorGUI, PopupMenuListene
         for(int i =0;i<itemsToRemove.length;i++)
         {
             tableModel.removeRow(selectedRows[i]-i);
-            DatabaseConnection.removeItem(itemsToRemove[i]);
+            databaseService.removeItem(itemsToRemove[i]);
         }
     }
 

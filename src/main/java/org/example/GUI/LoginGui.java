@@ -4,6 +4,8 @@ import org.example.Authentication.Authentication;
 import org.example.Authentication.AuthenticationStatusEnum;
 import org.example.Authentication.MD5Encryption;
 import org.example.Entity.User;
+import org.example.Service.SystemDataService;
+import org.example.Service.UserService;
 import org.example.Utils.ScaleLayout;
 import org.example.Utils.SystemData;
 
@@ -16,8 +18,9 @@ import java.security.NoSuchAlgorithmException;
 public class LoginGui implements ActionListener, CreatorGUI {
 
     ScaleLayout scallingController = new ScaleLayout();
-    Authentication authenticationController = new Authentication();
+    UserService authService = new UserService();
     MD5Encryption encryptionController = new MD5Encryption();
+    SystemDataService systemDataService = new SystemDataService();
 
     static JPanel authenticationPanel = new JPanel();
     JLabel panelTitleLB = new JLabel("Authentication:");
@@ -78,10 +81,10 @@ public class LoginGui implements ActionListener, CreatorGUI {
         try {
             if (component == loginBT) {
                 Authentication auth = getDataFromControls();
-                User currentUser = authenticationController.userValidated(auth);
+                User currentUser = authService.validUser(auth);
                 if (currentUser != null) {
-                    SystemData.updateSystemData(currentUser);
-                    authenticationController.setAuthenticationStatus(AuthenticationStatusEnum.LOGGED_IN);
+                    systemDataService.updateSystemData(currentUser);
+                    SystemData.getInstance().setStatus(AuthenticationStatusEnum.LOGGED_IN);
                     ManagerGUI.changeCurrentWindow(CurrentGuiEnum.INFO);
                 }
                 else {
